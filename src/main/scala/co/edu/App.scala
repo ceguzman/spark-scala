@@ -5,11 +5,7 @@ package co.edu
  */
 object App {
 
-  def main(args: Array[String]) {
-    println("Hello World!")
-    println(calcularSuma(5,3))
+  def main(args: Array[String]): Unit = {
+    // none
   }
-
-  def calcularSuma(num1: Int, num2: Int) = num1 + num2
-
 }

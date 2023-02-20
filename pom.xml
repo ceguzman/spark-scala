@@ -4,25 +4,26 @@
     <groupId>co.edu</groupId>
     <artifactId>spark</artifactId>
     <version>1.0.0</version>
-    <name>${project.artifactId}</name>
-    <description>My wonderfull scala app</description>
-    <inceptionYear>2018</inceptionYear>
-    <licenses>
-        <license>
-            <name>My License</name>
-            <url>http://....</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
+    <inceptionYear>2008</inceptionYear>
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <encoding>UTF-8</encoding>
-        <scala.version>2.12.6</scala.version>
-        <scala.compat.version>2.12</scala.compat.version>
-        <spec2.version>4.2.0</spec2.version>
+        <scala.version>2.13.0</scala.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>scala-tools.org</id>
+            <name>Scala-Tools Maven2 Repository</name>
+            <url>http://scala-tools.org/repo-releases</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>scala-tools.org</id>
+            <name>Scala-Tools Maven2 Repository</name>
+            <url>http://scala-tools.org/repo-releases</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <dependencies>
         <dependency>
@@ -30,87 +31,88 @@
             <artifactId>scala-library</artifactId>
             <version>${scala.version}</version>
         </dependency>
-
-        <!-- Test -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest_${scala.compat.version}</artifactId>
-            <version>3.0.5</version>
+            <groupId>org.specs</groupId>
+            <artifactId>specs</artifactId>
+            <version>1.2.5</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
-            <groupId>org.specs2</groupId>
-            <artifactId>specs2-core_${scala.compat.version}</artifactId>
-            <version>${spec2.version}</version>
-            <scope>test</scope>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_2.13</artifactId>
+            <version>3.2.1</version>
+            <scope>compile</scope>
         </dependency>
+
         <dependency>
-            <groupId>org.specs2</groupId>
-            <artifactId>specs2-junit_${scala.compat.version}</artifactId>
-            <version>${spec2.version}</version>
-            <scope>test</scope>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_2.13</artifactId>
+            <version>3.2.1</version>
+            <scope>compile</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-avro -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-avro_2.13</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-eclipse-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-eclipse-plugin</artifactId>
+            <version>2.9</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.scala-tools/maven-scala-plugin -->
+        <dependency>
+            <groupId>org.scala-tools</groupId>
+            <artifactId>maven-scala-plugin</artifactId>
+            <version>2.15.1</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
-        <testSourceDirectory>src/test/scala</testSourceDirectory>
         <plugins>
             <plugin>
-                <!-- see http://davidb.github.com/scala-maven-plugin -->
-                <groupId>net.alchim31.maven</groupId>
-                <artifactId>scala-maven-plugin</artifactId>
-                <version>3.3.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                            <goal>testCompile</goal>
-                        </goals>
-                        <configuration>
-                            <args>
-                                <arg>-dependencyfile</arg>
-                                <arg>${project.build.directory}/.scala_dependencies</arg>
-                            </args>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.21.0</version>
+                <artifactId>maven-eclipse-plugin</artifactId>
                 <configuration>
-                    <!-- Tests will be run with scalatest-maven-plugin instead -->
-                    <skipTests>true</skipTests>
+                    <downloadSources>true</downloadSources>
+                    <buildcommands>
+                        <buildcommand>ch.epfl.lamp.sdt.core.scalabuilder</buildcommand>
+                    </buildcommands>
+                    <additionalProjectnatures>
+                        <projectnature>ch.epfl.lamp.sdt.core.scalanature</projectnature>
+                    </additionalProjectnatures>
+                    <classpathContainers>
+                        <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
+                        <classpathContainer>ch.epfl.lamp.sdt.launching.SCALA_CONTAINER</classpathContainer>
+                    </classpathContainers>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.scalatest</groupId>
-                <artifactId>scalatest-maven-plugin</artifactId>
-                <version>2.0.0</version>
-                <configuration>
-                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
-                    <junitxml>.</junitxml>
-                    <filereports>TestSuiteReport.txt</filereports>
-                    <!-- Comma separated list of JUnit test class names to execute -->
-                    <jUnitClasses>samples.AppTest</jUnitClasses>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>test</id>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <configuration>
+                    <scalaVersion>${scala.version}</scalaVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
